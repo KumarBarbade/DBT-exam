@@ -36,22 +36,29 @@ select lower(job) from emp;
 select ename,length(ename)  from emp;
 select dept.deptno, count(ename) from emp,dept where emp.deptno = dept.deptno group by deptno;
 select dname,ename from emp,dept where  emp.deptno = dept.deptno order by dname;
-select * from emp where ename like '%AR%';
+select ename,POSITION('AR' IN ename ) from emp where  ename like '%AR%';  
 select  *,(0.2*sal) as "HRA" from emp;
 
 
 create table tempp(
-msg varchar(15)
+msg varchar(50)
 );
 
 delimiter //
 create procedure PROC1(srt1 varchar(15), str2 varchar(15))
 begin
-	declare str1 varchar(15);
-    declare str2 varchar(15);
-    if str2
+	declare res int;
+    set res=(select instr(str2,str1));
+     if (res=0)  then
+       insert into tempp values('string 1 does not exist inside string 2');
+	else 
+       insert into tempp values('string 1  exist inside string 2');
+     end if;
 end; //
 delimiter ;
+call PROC1('DAC','CDAC');
+select * from tempp;
+
 
 delimiter //
 create function FUNC1(a int,b int,c int)
